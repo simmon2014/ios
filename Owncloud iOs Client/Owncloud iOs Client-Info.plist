@@ -94,6 +94,11 @@
 		<key>NSExceptionDomains</key>
 		<dict/>
 	</dict>
+<<<<<<< HEAD
+=======
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Used to instantly upload your new photos after a significant change in your location</string>
+>>>>>>> background instant upload location permissons error fixed
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Used to instantly upload your new photos after a significant change in your location</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
@@ -146,5 +151,10 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+<<<<<<< HEAD
+=======
+	<key>privacy</key>
+	<string></string>
+>>>>>>> background instant upload location permissons error fixed
 </dict>
 </plist>
