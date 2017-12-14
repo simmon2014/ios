@@ -24,7 +24,7 @@
 #define k_hide_url_server NO
 
 //Set a default url server. It must be obligatory if we hide the url server (#define k_hide_url_server YES)
-#define k_default_url_server @""
+#define k_default_url_server @"https://pablos-mbp.solidgear.prv"
 
 //force override existing accounts with k_default_url_server. It must be obligatory if we change authentication type (k_is_sso_active)
 #define k_force_update_of_server_url NO

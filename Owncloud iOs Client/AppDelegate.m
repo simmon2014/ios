@@ -60,6 +60,7 @@
 #import "PresentedViewUtils.h"
 #import "OCLoadingSpinner.h"
 #import "OCOAuth2Configuration.h"
+#import "OpenInAppHandler.h"
 
 NSString * CloseAlertViewWhenApplicationDidEnterBackground = @"CloseAlertViewWhenApplicationDidEnterBackground";
 NSString * RefreshSharesItemsAfterCheckServerVersion = @"RefreshSharesItemsAfterCheckServerVersion";
@@ -2820,8 +2821,13 @@ float shortDelay = 0.3;
 
 - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray * _Nullable))restorationHandler {
 
-    NSString *accessedURL = userActivity.activityType;
-    DLog(@"The accessed url for the private link is: %@", accessedURL);
+    // Open links in app
+    if ([userActivity.activityType isEqualToString:NSUserActivityTypeBrowsingWeb]) {
+        NSURL *tappedLinkURL = userActivity.webpageURL;
+        
+        OpenInAppHandler *handler = [[OpenInAppHandler alloc] initWithTappedLinkURL:tappedLinkURL];
+        [handler openLink];
+    }
     
     return YES;
 }
