@@ -276,6 +276,7 @@
 		14EFCAED17FAFF48007A38B6 /* MainAppIcon_40-40.png in Resources */ = {isa = PBXBuildFile; fileRef = 14EFCAEC17FAFF48007A38B6 /* MainAppIcon_40-40.png */; };
 		2320DFF91FE14CC000D7DEFD /* OpenInAppHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 2320DFF81FE14CC000D7DEFD /* OpenInAppHandler.m */; };
 		230233B11F9DF401007ED1C5 /* LocalAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 230233B01F9DF401007ED1C5 /* LocalAuthentication.framework */; };
+		2320DFF91FE14CC000D7DEFD /* OpenInAppHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 2320DFF81FE14CC000D7DEFD /* OpenInAppHandler.m */; };
 		400560751A03B1190030D502 /* MainAppIcon_40-40@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 400560741A03B1190030D502 /* MainAppIcon_40-40@2x.png */; };
 		400560771A03B4F80030D502 /* MainAppIcon_40-40@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 400560761A03B4F80030D502 /* MainAppIcon_40-40@3x.png */; };
 		4005607C1A03CEEE0030D502 /* MainAppIcon_60-60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4005607B1A03CEEE0030D502 /* MainAppIcon_60-60@2x.png */; };
@@ -1398,6 +1399,8 @@
 		2320DFF71FE14CC000D7DEFD /* OpenInAppHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenInAppHandler.h; sourceTree = "<group>"; };
 		2320DFF81FE14CC000D7DEFD /* OpenInAppHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenInAppHandler.m; sourceTree = "<group>"; };
 		230233B01F9DF401007ED1C5 /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
+		2320DFF71FE14CC000D7DEFD /* OpenInAppHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenInAppHandler.h; sourceTree = "<group>"; };
+		2320DFF81FE14CC000D7DEFD /* OpenInAppHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenInAppHandler.m; sourceTree = "<group>"; };
 		4002B01A1D421A7100520FB3 /* sq */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sq; path = sq.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4002B01C1D421A8300520FB3 /* sl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sl; path = sl.lproj/Localizable.strings; sourceTree = "<group>"; };
 		400560741A03B1190030D502 /* MainAppIcon_40-40@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MainAppIcon_40-40@2x.png"; sourceTree = "<group>"; };
