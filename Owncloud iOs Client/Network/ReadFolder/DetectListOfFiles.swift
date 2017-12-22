@@ -14,14 +14,11 @@
  along with this program. If not, see <http://www.gnu.org/licenses/gpl-3.0.en.html>.
  */
 
-
-import Foundation
-
 @objc class DetectListOfFiles: NSObject {
     
     func readFolderOfURL(_ url: NSURL, credentials: OCCredentialsDto,
-                           success: ( @escaping (_ listOfFiles: [Any]) -> Void ),
-                            failure: (@escaping (_ errorHttp: NSInteger?,_ error: NSError?) -> Void) ) {
+                           success: ( @escaping (_ listOfFiles: [Any]) -> Void),
+                            failure: (@escaping (_ errorHttp: NSInteger,_ error: NSError) -> Void) ) {
         
         
         AppDelegate.sharedOCCommunication().setCredentials(credentials)
@@ -50,7 +47,7 @@ import Foundation
             //TODO: chec redirectedserver in status
             
             if ( items != nil && !(items!.isEmpty) ) {
-                success(items!)
+                success(UtilsDtos.pass(toFileDtoArrayThisOCFileDtoArray: items!) as! [FileDto])
             } else {
                 let statusCode: NSInteger = (response?.statusCode == nil) ? 0: (response?.statusCode)!
                 failure(statusCode, UtilsFramework.getErrorWithCode(Int(kOCErrorServerUnauthorized), andCustomMessageFromTheServer: "")! as NSError)
@@ -65,8 +62,7 @@ import Foundation
        })
     }
     
-    
- func getListOfFiles(url:NSURL, credentials: OCCredentialsDto, withCompletion completion: @escaping (_ errorHttp: NSInteger?,_ error: NSError?, _ listOfFileDtos: [FileDto]? ) -> Void) {
+func getListOfFiles(url:NSURL, credentials: OCCredentialsDto, withCompletion completion: @escaping (_ errorHttp: NSInteger?,_ error: NSError?, _ listOfFileDtos: [FileDto]? ) -> Void) {
     
     self.readFolderOfURL(url, credentials: credentials, success: { (_ listOfFiles: [Any]) in
             var listOfFileDtos: [FileDto]? = nil
@@ -76,7 +72,7 @@ import Foundation
             //Pass the listOfFiles with OCFileDto to FileDto Array
             listOfFileDtos = UtilsDtos.pass(toFileDtoArrayThisOCFileDtoArray: listOfFiles) as? [FileDto]
         
-            completion(nil, nil, listOfFileDtos)
+            completion( nil, nil, listOfFileDtos)
 
         }) { (_ errorHttp: NSInteger?,_ error: NSError?) in
             

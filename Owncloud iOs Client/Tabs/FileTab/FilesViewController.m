@@ -198,6 +198,7 @@
     [_tableView addSubview:_refreshControl];
     
 
+
 }
 
 
@@ -246,6 +247,7 @@
         app.isNewUser = NO;
     }
     
+
 }
 
 // Notifies the view controller that its view is about to be added to a view hierarchy.
@@ -287,6 +289,7 @@
         [self initLoading];
         
     }
+
 
 }
 
@@ -505,6 +508,7 @@
     // Deselect the selected row
     NSIndexPath *indexPath = [_tableView indexPathForSelectedRow];
     [_tableView deselectRowAtIndexPath:indexPath animated:YES];
+
 }
 
 // Notifies the view controller that its view is about to be removed from a view hierarchy.
@@ -1704,13 +1708,21 @@
  */
 - (void) goToFolder:(FileDto *) selectedFile {
     
+    _selectedFileDto = selectedFile;
+    
     NSMutableArray *allFiles = [ManageFilesDB getFilesByFileIdForActiveUser:selectedFile.idFile];
     
     //TODO:Refactor other utils methods
     
     NSArray *splitedUrl = [[UtilsUrls getFullRemoteServerPath:_mUser] componentsSeparatedByString:@"/"];
 
-    _nextRemoteFolder = [NSString stringWithFormat:@"%@//%@%@", [splitedUrl objectAtIndex:0], [splitedUrl objectAtIndex:2], [NSString stringWithFormat:@"%@%@",selectedFile.filePath, selectedFile.fileName]];
+    NSString *selectedFileName = selectedFile.fileName;
+    
+    if (selectedFileName == nil) {
+        selectedFileName = @"";
+    }
+    
+    _nextRemoteFolder = [NSString stringWithFormat:@"%@//%@%@", [splitedUrl objectAtIndex:0], [splitedUrl objectAtIndex:2], [NSString stringWithFormat:@"%@%@",selectedFile.filePath, selectedFileName]];
     
     //if no files we ask for it else go to the next folder
     if([allFiles count] <= 0) {
@@ -3667,6 +3679,26 @@
         //Do the request to get the shared items
         [self downloadTheFile];
         
+    }
+}
+
+-(void)navigateTo:(FileDto *)file {
+    
+    _selectedFileDto = file;
+    
+    if (IS_IPHONE){
+        [self goToSelectedFileOrFolder:file andForceDownload:NO];
+    } else {
+        
+        if(file.isDirectory){
+            [self initLoading];
+            [self goToFolder:file];
+        } else {
+            //Select in detail
+            AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication]delegate];
+            app.detailViewController.sortedArray=_sortedArray;
+            [app.detailViewController handleFile:file fromController:fileListManagerController andIsForceDownload:NO];
+        }
     }
 }
 

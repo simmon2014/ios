@@ -159,7 +159,10 @@ ELCImagePickerControllerDelegate, UISearchBarDelegate, UIAlertViewDelegate, MBPr
 - (void)reloadCellByFile:(FileDto *) file;
 - (void)reloadTableFileList;
 - (void)goToSelectedFileOrFolder:(FileDto *) selectedFile andForceDownload:(BOOL) isForceDownload;
+-(void)prepareForNavigationWithData:(NSArray *) requestArray;
 - (void)initFilesView;
+
+-(void)navigateTo:(FileDto *)file;
 
 @end;
 

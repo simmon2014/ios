@@ -39,7 +39,7 @@ typedef enum {
 @property NSInteger userId;
 @property BOOL needRefresh;
 @property NSInteger isDownload;
-@property NSInteger fileId;
+@property NSInteger fileId; //padre.
 @property (nonatomic, copy) NSString *localFolder;
 @property BOOL isFavorite;
 @property BOOL isRootFolder;
