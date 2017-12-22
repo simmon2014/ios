@@ -62,6 +62,10 @@
 #import "OCOAuth2Configuration.h"
 #import "OpenInAppHandler.h"
 #import "UtilsUrls.h"
+<<<<<<< HEAD
+=======
+
+>>>>>>> acces to files step by step
 
 NSString * CloseAlertViewWhenApplicationDidEnterBackground = @"CloseAlertViewWhenApplicationDidEnterBackground";
 NSString * RefreshSharesItemsAfterCheckServerVersion = @"RefreshSharesItemsAfterCheckServerVersion";
@@ -2841,13 +2845,35 @@ float shortDelay = 0.3;
 #pragma mark - Open in app URL
 
 - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray * _Nullable))restorationHandler {
-
-    // Open links in app
+    
     if ([userActivity.activityType isEqualToString:NSUserActivityTypeBrowsingWeb]) {
         NSURL *tappedLinkURL = userActivity.webpageURL;
         
-        OpenInAppHandler *handler = [[OpenInAppHandler alloc] initWithTappedLinkURL:tappedLinkURL];
-        [handler openLink];
+        OpenInAppHandler *handler = [[OpenInAppHandler alloc] initWithLink:tappedLinkURL andUser:_activeUser];
+        [handler handleLink:^(NSString *items) {
+            
+            NSArray *elts = [items componentsSeparatedByString:@"/"];
+                        
+            NSString *url = @"/remote.php/";
+            
+            for (int i = 4; i < elts.count - 2; i++) {
+                NSString *tmp = elts[i];
+                tmp = [tmp stringByAppendingString:@"/"];
+                url = [url stringByAppendingString:tmp];
+                NSString *name = [elts[i+1] stringByAppendingString:@"/"];
+                
+                NSString *tmpURL = [UtilsUrls getFilePathOnDBByFilePathOnFileDto:url andUser:self.activeUser];
+                FileDto *checkedFile = [ManageFilesDB getFileDtoByFileName: name  andFilePath:tmpURL andUser:self.activeUser];
+                
+                if (checkedFile != nil) {
+                    [_presentFilesViewController navigateTo: checkedFile];
+                    [NSThread sleepForTimeInterval:2];
+                }
+            }
+
+        } failure:^(NSError *error) {
+            NSLog(@"LOG ---> error getting the redirection");
+        }];
     }
     
     return YES;
