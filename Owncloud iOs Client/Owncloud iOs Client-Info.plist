@@ -85,6 +85,8 @@
 	<string></string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+	<true/>
 	<key>LastGitCommit</key>
 	<string></string>
 	<key>NSAppTransportSecurity</key>
@@ -94,12 +96,7 @@
 		<key>NSExceptionDomains</key>
 		<dict/>
 	</dict>
-<<<<<<< HEAD
-=======
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Used to instantly upload your new photos after a significant change in your location</string>
->>>>>>> background instant upload location permissons error fixed
-	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Used to instantly upload your new photos after a significant change in your location</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Used to instantly upload your new photos after a significant change in your location</string>
@@ -112,6 +109,8 @@
 		<string>audio</string>
 		<string>fetch</string>
 	</array>
+	<key>UIFileSharingEnabled</key>
+	<true/>
 	<key>UIInterfaceOrientation</key>
 	<string>UIInterfaceOrientationPortrait</string>
 	<key>UILaunchStoryboardName</key>
@@ -151,10 +150,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
-<<<<<<< HEAD
-=======
 	<key>privacy</key>
 	<string></string>
->>>>>>> background instant upload location permissons error fixed
 </dict>
 </plist>
