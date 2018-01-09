@@ -89,6 +89,10 @@
  */
 
 -(void)cacheDownloadedFolder:(NSMutableArray *)downloadedFolder withParent:(FileDto *)parent;
+<<<<<<< HEAD
+=======
+
+>>>>>>> remaked the algorithm for taking all the files tree in this feature
 
 -(id)initWithTappedLinkURL:(NSURL *) linkURL;
 -(void)openLink;
