@@ -79,6 +79,8 @@
 
 -(void)handleLink: (void(^)(NSString *items))success failure:(void(^)(NSError *error)) failure;
 
+-(void)handleLink;
+
 /**
  * Cache in database the FileDTO of the downloaded private link.
  *
@@ -86,7 +88,7 @@
  *
  */
 
--(void)cacheDownloadedFolder: (NSArray<FileDto *> *) downloadedFolder;
+-(void)cacheDownloadedFolder:(NSMutableArray *)downloadedFolder withParent:(FileDto *)parent;
 
 
 
