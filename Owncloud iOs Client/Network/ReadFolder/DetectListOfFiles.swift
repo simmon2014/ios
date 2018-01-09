@@ -14,6 +14,7 @@
  along with this program. If not, see <http://www.gnu.org/licenses/gpl-3.0.en.html>.
  */
 
+import Foundation
 @objc class DetectListOfFiles: NSObject {
     
     func readFolderOfURL(_ url: NSURL, credentials: OCCredentialsDto,
