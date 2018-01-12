@@ -77,7 +77,7 @@
  *
  */
 
--(void)handleLink: (void(^)(NSString *items))success failure:(void(^)(NSError *error)) failure;
+-(void)handleLink: (void(^)(NSArray *items))success failure:(void(^)(NSError *error)) failure;
 
 -(void)handleLink;
 
@@ -89,10 +89,6 @@
  */
 
 -(void)cacheDownloadedFolder:(NSMutableArray *)downloadedFolder withParent:(FileDto *)parent;
-<<<<<<< HEAD
-=======
-
->>>>>>> remaked the algorithm for taking all the files tree in this feature
 
 -(id)initWithTappedLinkURL:(NSURL *) linkURL;
 -(void)openLink;

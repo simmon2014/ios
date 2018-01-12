@@ -235,19 +235,19 @@
     }
     
 
-    //If is a new user set the file list
-    if (app.isNewUser) {
-        //We are changing of user
-        //Show the file list in the correct place
-        if (!IS_IPHONE){
-            [_tableView setContentOffset:CGPointMake(0,-(k_navigation_bar_height + k_status_bar_height)) animated:animated];
-        } else if (IS_IPHONE && !IS_PORTRAIT) {
-            [_tableView setContentOffset:CGPointMake(0,-(k_navigation_bar_height_in_iphone_landscape + k_status_bar_height)) animated:animated];
-        } else {
-            [_tableView setContentOffset:CGPointMake(0,-(k_status_bar_height + k_navigation_bar_height)) animated:animated];
-        }
-        app.isNewUser = NO;
-    }
+//    //If is a new user set the file list
+//    if (app.isNewUser) {
+//        //We are changing of user
+//        //Show the file list in the correct place
+//        if (!IS_IPHONE){
+//            [_tableView setContentOffset:CGPointMake(0,-(k_navigation_bar_height + k_status_bar_height)) animated:animated];
+//        } else if (IS_IPHONE && !IS_PORTRAIT) {
+//            [_tableView setContentOffset:CGPointMake(0,-(k_navigation_bar_height_in_iphone_landscape + k_status_bar_height)) animated:animated];
+//        } else {
+//            [_tableView setContentOffset:CGPointMake(0,-(k_status_bar_height + k_navigation_bar_height)) animated:animated];
+//        }
+//        app.isNewUser = NO;
+//    }
     
 
 }
