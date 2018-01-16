@@ -919,9 +919,6 @@ public enum TextfieldType: String {
             
             if (listOfFileDtos != nil && !((listOfFileDtos?.isEmpty)!)) {
                 /// credentials allowed access to root folder: well done
-                if self.forceAccountMigration {
-                    OCKeychain.storeCredentials(self.userNewCredentials)
-                }
                 
                 let tryingToUpdateDifferentUser = (self.user != nil &&
                     (self.loginMode == .update || self.loginMode == .expire)
@@ -940,7 +937,8 @@ public enum TextfieldType: String {
                         let newUser = UserDto()
                         if self.loginMode != .create {
                             newUser.userId = self.user!.userId
-                            if self.loginMode == .migrate {
+                            self.userNewCredentials.userId = String(self.user!.userId)
+                            if self.loginMode == .migrate {  
                                 newUser.predefinedUrl = k_default_url_server
                             }
                         }
@@ -953,6 +951,10 @@ public enum TextfieldType: String {
                     }
 
                     self.userNewCredentials.baseURL = UtilsUrls.getFullRemoteServerPath(self.user)
+                    
+                    if self.forceAccountMigration {
+                        OCKeychain.storeCredentials(self.userNewCredentials)
+                    }
 
                     if self.loginMode == .create {
                         
