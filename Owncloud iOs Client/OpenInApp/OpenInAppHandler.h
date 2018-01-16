@@ -39,16 +39,6 @@
 -(void)getRedirection: (NSURL *) privateLink success:(void(^)(NSString *redirectedURL))success failure:(void(^)(NSError *error)) failure;
 
 /**
- * Converts the url from form https://server/
- *
- * @param userId -> id of user
- *
- * @return NSString with the url of the redirection propperly formed.
- * for example https://server/
- */
--(NSString *)transformURL: (NSURL *)redirectedURL;
-
-/**
  * Obtain the files inside a folder
  *
  * @param folderPath -> url of the folder you want the files.
@@ -79,8 +69,6 @@
 
 -(void)handleLink: (void(^)(NSArray *items))success failure:(void(^)(NSError *error)) failure;
 
--(void)handleLink;
-
 /**
  * Cache in database the FileDTO of the downloaded private link.
  *
@@ -89,8 +77,5 @@
  */
 
 -(void)cacheDownloadedFolder:(NSMutableArray *)downloadedFolder withParent:(FileDto *)parent;
-
--(id)initWithTappedLinkURL:(NSURL *) linkURL;
--(void)openLink;
 
 @end

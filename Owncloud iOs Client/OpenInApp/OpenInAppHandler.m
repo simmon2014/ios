@@ -62,15 +62,7 @@
     return urls;
 }
 
--(void)handleLink {
-    
-    
-    
-    
-}
-
 -(NSMutableArray *)getQueryParameters:(NSString *) url {
-    
     
     NSMutableArray *params = [[NSMutableArray alloc] init];
     for (NSString *param in [url componentsSeparatedByString:@"&"]) {
@@ -84,28 +76,30 @@
 
 -(void)cacheDownloadedFolder:(NSMutableArray *)downloadedFolder withParent:(FileDto *)parent {
     
-    
-    for (int i = 1; i < downloadedFolder.count; i++) {
-        FileDto *tmpFileDTO = downloadedFolder[i];
-        FileDto *cachedFile = [ManageFilesDB getFolderByFilePath:tmpFileDTO.filePath andFileName:tmpFileDTO.fileName];
-        if (cachedFile != nil) {
-            [downloadedFolder removeObjectAtIndex:i];
+    NSMutableArray *folderToCache = [downloadedFolder mutableCopy];
+    [folderToCache removeObjectAtIndex:0];
+    for (int i = 0; i < folderToCache.count; i++) {
+        FileDto *tmpFileDTO = folderToCache[i];
+        tmpFileDTO.filePath = [tmpFileDTO.filePath stringByReplacingOccurrencesOfString:@"/remote.php/webdav/" withString:@""];
+        FileDto *fileToCache = [ManageFilesDB getFileDtoByFileName:tmpFileDTO.fileName andFilePath:tmpFileDTO.filePath andUser:_user];
+        
+        if (fileToCache != nil) {
+            [folderToCache removeObjectAtIndex:i];
         }
     }
     
-    [ManageFilesDB insertManyFiles:downloadedFolder ofFileId:5 andUser:APP_DELEGATE.activeUser];
+    [ManageFilesDB insertManyFiles:downloadedFolder ofFileId:parent.idFile andUser:APP_DELEGATE.activeUser];
 }
 
 -(void)getFilesFrom:(NSString *)folderPath success:(void (^)(NSArray *))success failure:(void (^)(NSError *))failure {
     
     [[AppDelegate sharedOCCommunication] readFolder:folderPath withUserSessionToken:APP_DELEGATE.userSessionCurrentToken onCommunication:[AppDelegate sharedOCCommunication] successRequest:^(NSHTTPURLResponse *response, NSArray *items, NSString *redirectedServer, NSString *token) {
         
-        NSLog(@"LOG ---> items count = %lu",(unsigned long)items.count);
         success(items);
         
     } failureRequest:^(NSHTTPURLResponse *response, NSError *error, NSString *token, NSString *redirectedServer) {
         
-        NSLog(@"LOG ---> error en la request");
+        //TODO: manage the failure.
         failure(error);
     }];
     
@@ -114,7 +108,6 @@
 -(void)handleLink:(void (^)(NSArray *))success failure:(void (^)(NSError *))failure {
     
     [self getRedirection:_tappedLinkURL success:^(NSString *redirectedURL) {
-        
         
         NSString *fileRedirectedURL = [UtilsUrls getSharedLinkArgumentsFromWebLink:redirectedURL andUser:_user];
         NSArray *queryParameters = [self getQueryParameters:fileRedirectedURL];
@@ -139,37 +132,61 @@
                 [self getFilesFrom:urls[idx] success:^(NSArray *items) {
                     NSMutableArray *directoryList = [UtilsDtos passToFileDtoArrayThisOCFileDtoArray:items];
                     files[idx] = directoryList;
-                    NSLog(@"LOG ---> success la request de get files con %@", urls[idx]);
                     
                     if (idx == urls.count - 1) {
                         dispatch_group_leave(group);
                     }
                 } failure:^(NSError *error) {
-                    NSLog(@"LOG ---> failure la request de get files con %@", urls[idx]);
                     //TODO: stop requests and show error message to user.
                 }];
             }];
         });
         
+        NSMutableArray *filesToReturn = [[NSMutableArray alloc] initWithCapacity:urls.count];
+        
         dispatch_group_notify(group ,dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0),^{
-            FileDto *parent = [ManageFilesDB getRootFileDtoByUser: _user];
-            FileDto *documents = [ManageFilesDB getFileDtoByFileName:@"Documents/" andFilePath:@"" andUser:_user];
-            NSLog(@"LOG ---> parent id%ld", (long)documents.idFile);
+            FileDto *documents = [ManageFilesDB getRootFileDtoByUser: _user];
             for (int i = 1; i < files.count; i ++) {
-                NSString *path = [UtilsUrls getFilePathOnDBByFullPath:urls[i - 1] andUser:_user];
-                NSString *name = [UtilsUrls getFilePathOnDBByFullPath:urls[i] andUser:_user];
-
-                NSLog(@"LOG ---> path %@ and name %@", path, name);
-                FileDto *documents = [ManageFilesDB getFileDtoByFileName:@"Documents/" andFilePath:path andUser:_user];
+                
+                NSString *urlToGetAsParent = urls[i];
+                NSString *shortedFileURL = [UtilsUrls getFilePathOnDBByFullPath:urlToGetAsParent andUser:_user];
+                NSString *name = [self getFileNameFromURLWithURL:shortedFileURL];
+                NSString *path = [self getFilePathFromURLWithURL:shortedFileURL andFileName:name];
+                if ([path isEqualToString:@"/remote.php/webdav/"]) {
+                    path = @"";
+                }
+                
+                documents = [ManageFilesDB getFileDtoByFileName:name andFilePath:path andUser:_user];
+                if (documents != nil) {
+                    [filesToReturn addObject:documents];
+                }
                 [self cacheDownloadedFolder:files[i] withParent:documents];
+
             }
-            NSLog(@"LOG ---> all requests finished %@", files[0][0]);
+            success([filesToReturn copy]);
         });
         
     } failure:^(NSError *error) {
-        NSLog(@"LOG ---> failure del handle link");
+        //TODO: manage the failure.
     }];
     
+}
+
+-(NSString *)getFileNameFromURLWithURL: (NSString *)url {
+    NSMutableArray *components = [NSMutableArray arrayWithArray:[url componentsSeparatedByString:@"/"]];
+    NSString *name = components.lastObject;
+    if (components.count > 1) {
+        [components removeLastObject];
+        name = components.lastObject;
+        name = [name stringByAppendingString:@"/"];
+    }
+    
+    return name;
+}
+
+-(NSString *)getFilePathFromURLWithURL: (NSString *)url andFileName: (NSString *)name {
+    NSString *path = [url stringByReplacingOccurrencesOfString:name withString:@""];
+    return path;
 }
 
 @end
