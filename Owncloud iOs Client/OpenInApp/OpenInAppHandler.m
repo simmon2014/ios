@@ -76,19 +76,19 @@
 
 -(void)cacheDownloadedFolder:(NSMutableArray *)downloadedFolder withParent:(FileDto *)parent {
     
-    NSMutableArray *folderToCache = [downloadedFolder mutableCopy];
-    [folderToCache removeObjectAtIndex:0];
-    for (int i = 0; i < folderToCache.count; i++) {
-        FileDto *tmpFileDTO = folderToCache[i];
+    NSMutableArray *folderToCache = [NSMutableArray new];
+    int numberOfFiles = (int) downloadedFolder.count;
+    for (int i = 0; i < numberOfFiles; i++) {
+        FileDto *tmpFileDTO = downloadedFolder[i];
         tmpFileDTO.filePath = [tmpFileDTO.filePath stringByReplacingOccurrencesOfString:@"/remote.php/webdav/" withString:@""];
         FileDto *fileToCache = [ManageFilesDB getFileDtoByFileName:tmpFileDTO.fileName andFilePath:tmpFileDTO.filePath andUser:_user];
         
-        if (fileToCache != nil) {
-            [folderToCache removeObjectAtIndex:i];
+        if (fileToCache == nil) {
+            [folderToCache addObject:tmpFileDTO];
         }
     }
-    
-    [ManageFilesDB insertManyFiles:downloadedFolder ofFileId:parent.idFile andUser:APP_DELEGATE.activeUser];
+
+    [ManageFilesDB insertManyFiles:folderToCache ofFileId:parent.idFile andUser:APP_DELEGATE.activeUser];
 }
 
 -(void)getFilesFrom:(NSString *)folderPath success:(void (^)(NSArray *))success failure:(void (^)(NSError *))failure {
@@ -158,6 +158,7 @@
                 
                 documents = [ManageFilesDB getFileDtoByFileName:name andFilePath:path andUser:_user];
                 if (documents != nil) {
+//                    documents.filePath = [documents.filePath stringByReplacingOccurrencesOfString:@"/remote.php/webdav" withString:@""];
                     [filesToReturn addObject:documents];
                 }
                 [self cacheDownloadedFolder:files[i] withParent:documents];
